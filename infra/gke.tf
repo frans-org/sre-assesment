@@ -6,7 +6,7 @@ data "google_client_config" "provider" {
 # Defer reading the cluster data until the GKE cluster exists.
 data "google_container_cluster" "primary" {
   name       = "${var.project_id}-gke"
-  depends_on = [module.gke-cluster]
+  depends_on = [google_container_cluster.primary]
 }
 
 provider "kubernetes" {
