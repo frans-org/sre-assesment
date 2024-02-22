@@ -30,15 +30,7 @@ jobs:
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-    #   with:
-    #     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # - name: Setup terraform variables
-    #   run: |-
-    #     cat > pipeline.auto.tfvars <<EOF
-    #     region="${{ vars.GCP_REGION }}" 
-    #     project="${{ vars.GCP_PROJECT }}" 
-    #     EOF
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -53,8 +45,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -var-file=terraform.tfvars -out=tfplan -input=false
-      working-directory: ./infra
+      run: terraform plan -out=tfplan -input=false
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
