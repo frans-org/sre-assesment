@@ -50,8 +50,7 @@ resource "kubernetes_service" "example" {
   }
   spec {
     selector = {
-
-      app = kubernetes_deployment.nginx.spec.0.template.0.metadata[0].labels.App
+      App = kubernetes_deployment.nginx.spec.0.template.0.metadata[0].labels.App
     }
     session_affinity = "ClientIP"
     port {
