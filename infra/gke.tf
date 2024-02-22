@@ -52,7 +52,7 @@ resource "google_container_node_pool" "primary_nodes" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
-
+    disk_size_gb = "50GB"
     labels = {
       env = var.project_id
     }
