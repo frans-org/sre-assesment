@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "nginx" {
         container {
           image = "nginx:1.7.8"
           name  = "example"
-
+          command = [ "/bin/sh", "-c", "echo 'Hello lineten' > /usr/share/nginx/html/index.html"]
           port {
             container_port = 80
           }
