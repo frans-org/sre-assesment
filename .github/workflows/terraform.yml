@@ -1,5 +1,5 @@
 
-name: 'Terraform'
+name: 'CICD'
 
 on:
   push:
@@ -8,9 +8,37 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
-  terraform:
+  docker_ci_job:
+    name: docker
+    runs-on: ubuntu-latest
+    environment: production
+
+    env:
+      IMAGE_NAME: gcr.io/${{secrets.PROJECT_ID}}/app
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}       
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+  
+      - name: Build Docker image
+        run: docker build . -t $IMAGE_NAME
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
+  terraform_ci_job:
+    needs: docker_ci_job
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
