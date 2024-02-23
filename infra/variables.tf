@@ -1,6 +1,6 @@
 variable "project_id" {
   description = "project id"
-  default = "aqueous-glyph-302220"
+  #default = "aqueous-glyph-302220"
 }
 
 variable "region" {
