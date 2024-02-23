@@ -17,7 +17,7 @@ jobs:
     environment: production
 
     env:
-      IMAGE_NAME: gcr.io/${{secrets.PROJECT_ID}}/app
+      IMAGE_NAME: eu.gcr.io/${{secrets.PROJECT_ID}}/app
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
