@@ -20,5 +20,5 @@ variable "gke_num_nodes" {
 
 variable "cluster_name" {
   description = "name assinged to the cluster"
-  default = "test_cluster"
+  default = "test-cluster"
 }
