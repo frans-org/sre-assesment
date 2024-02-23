@@ -1,4 +1,1 @@
-variable "project_id" {
-  description = "project id"
-  default = ""
-}
+variable "project_id" {}
