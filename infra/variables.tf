@@ -5,12 +5,12 @@ variable "project_id" {
 
 variable "region" {
   description = "region"
-  default = "europe-west2"
+  default = "us-central1"
 }
 
 variable "zone" {
   description = "region"
-  default = "europe-west2-b"
+  default = "us-central1-b"
 }
 
 variable "gke_num_nodes" {
