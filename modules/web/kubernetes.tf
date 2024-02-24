@@ -21,9 +21,9 @@ resource "kubernetes_deployment" "nginx" {
       }
       spec {
         container {
-          image = "nginx:1.7.8"
+          image = "eu.gcr.io/${var.project_id}/app"# e.g, "nginx:1.7.8"
           name  = "example"
-          command = [ "/bin/sh", "-c", "echo 'Hello lineten' > /usr/share/nginx/html/index.html"]
+          #command = [ "/bin/sh", "-c", "echo 'Hello lineten' > /usr/share/nginx/html/index.html"]
           port {
             container_port = 80
           }

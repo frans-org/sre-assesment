@@ -1,5 +1,5 @@
 
-name: 'Terraform'
+name: 'CICD'
 
 on:
   push:
@@ -8,12 +8,42 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
-  terraform:
+  docker_ci_job:
+    name: docker
+    runs-on: ubuntu-latest
+    environment: production
+
+    env:
+      IMAGE_NAME: eu.gcr.io/${{secrets.PROJECT_ID}}/app
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}       
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+  
+      - name: Build Docker image
+        run: docker build . -t $IMAGE_NAME
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
+  terraform_ci_job:
+    needs: docker_ci_job
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
+    env: 
+      PROJECT_ID: ${{secrets.PROJECT_ID}}
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -25,12 +55,18 @@ jobs:
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
+    - name: Setup terraform variables
+      id: vars
+      run: |-
+        cat > pipeline.auto.tfvars <<EOF
+        project_id="${{secrets.PROJECT_ID}}" 
+        EOF
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
