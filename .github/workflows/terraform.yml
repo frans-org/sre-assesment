@@ -21,10 +21,10 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v4
         with:
           credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}       
 
@@ -55,7 +55,7 @@ jobs:
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
