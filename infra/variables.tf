@@ -10,7 +10,7 @@ variable "region" {
 
 variable "zone" {
   description = "region"
-  default = "europe-west2-a"
+  default = "europe-west2-b"
 }
 
 variable "gke_num_nodes" {
