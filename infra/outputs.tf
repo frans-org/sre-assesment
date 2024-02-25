@@ -17,3 +17,7 @@ output "kubernetes_cluster_host" {
   value       = google_container_cluster.primary.endpoint
   description = "GKE Cluster Host"
 }
+
+output "web_app_endpoint" {
+  value = module.web_app.web_app_endpoint
+}
