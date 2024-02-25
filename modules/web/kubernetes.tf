@@ -61,12 +61,3 @@ resource "kubernetes_service" "example" {
     type = "LoadBalancer"
   }
 }
-
-data "kubernetes_service_account" "default" {
-  metadata {
-    name = "default"
-  }
-  image_pull_secret{
-    name = "artifact-reg"
-  }
-}
