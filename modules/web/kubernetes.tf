@@ -61,3 +61,7 @@ resource "kubernetes_service" "example" {
     type = "LoadBalancer"
   }
 }
+
+output "web_app_endpoint" {
+  value = kubernetes_service.example.status.0.load_balancer.0.ingress.0.hostname
+}
