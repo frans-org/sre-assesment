@@ -33,6 +33,7 @@ resource "google_container_node_pool" "primary_nodes" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
+    service_account = "project-service-account@${var.project_id}.iam.gserviceaccount.com"
     disk_size_gb = 50
     labels = {
       env = var.project_id
@@ -46,3 +47,14 @@ resource "google_container_node_pool" "primary_nodes" {
     }
   }
 }
+
+# resource "google_service_account" "sa" {
+#   account_id   = "project-service-account"
+#   display_name = "Workload Service Account"
+# }
+
+# resource "google_service_account_iam_member" "workload-perms" {
+#   service_account_id = google_service_account.sa.name
+#   role               = "roles/iam.serviceAccountUser"
+#   member             = "serviceAccount:${google_service_account.sa.email}"
+# }
