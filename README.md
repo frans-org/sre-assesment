@@ -19,12 +19,19 @@ The infrastructure(terraform IAC) is composed of the this components
 
 ## Build Steps
 
-The build pipeline builds a docker image from Dockerfile and pushes the image to continer registry.
+### Build and push
+1. The build pipeline builds a docker image from Dockerfile. 
+2. and pushes the image to continer registry.
+3. Ensure the correct permissions are setup to allow github to authenticate with Google Cloud.
+4. This can be done by creating credentials and adding them to github secrets e.g. ${{ secrets.GOOGLE_CREDENTIALS }}
 
+### Deploy
+1. Using terraform, the workflow will run a job that deploys the files needed to create the infrastructure
+2. This includes the k8s manifest files that deploy the replica pods running the application containers
+3. When the pod is initialised it pulls the image from the GCR registry, so its required that imagePullSecrets is setup
+4. You can run the following commands to set this up.
 
-Github actions runs through the workflow
-
-### setup image pull request
+### setup image pull secrets
 ```
 kubectl create secret docker-registry artifact-reg \
 --docker-server=https://europe-docker.pkg.dev \
@@ -32,9 +39,26 @@ kubectl create secret docker-registry artifact-reg \
 --docker-username=_json_key \
 --docker-password="$(cat conf.json)"
 ```
+5. You can edit the default service account
+   
+```
+kubectl edit serviceaccount default --namespace default
+```
+6. Then add the newly created imagePullSecret secret
 
+```
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: default
+  ...
+imagePullSecrets:
+- name: artifact-registry
+```
 
-## local testing
+## To test the app locally
+
 1. Base directory
    `` cd ~/``
 
